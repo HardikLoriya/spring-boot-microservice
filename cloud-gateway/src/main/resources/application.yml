@@ -10,25 +10,42 @@ spring:
         enabled: false
     gateway:
       routes:
-        - id: USER-SERVICE
-          uri: lb://USER-SERVICE
+        - id: STUDENT-SERVICE
+          uri: lb://STUDENT-SERVICE
           predicates:
-            - Path=/users/**
+            - Path=/students/**
           filters:
+            - name: AuthenticationFilter
             - name: CircuitBreaker
               args:
-                name: USER-SERVICE
-                fallbackuri: forward:/userServiceFallBack
+                name: STUDENT-SERVICE
+                fallbackuri: forward:/studentServiceFallBack
+            
+    
         - id: DEPARTMENT-SERVICE
           uri: lb://DEPARTMENT-SERVICE
           predicates:
             - Path=/departments/**
           filters:
+            - name: AuthenticationFilter
             - name: CircuitBreaker
               args:
                 name: DEPARTMENT-SERVICE
                 fallbackuri: forward:/departmentServiceFallBack
+        
+        - id: identity-service
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+           - Path=/auth/**
 
+eureka:
+    client:
+      register-with-eureka: true
+      fetch-registry: true
+      service-url:
+        defaultZone: http://localhost:8761/eureka/
+    instance:
+      hostname: localhost
 
 hystrix:
   command:
