@@ -1,4 +1,4 @@
-package com.dailycodebuffer.cloud;
+package com.secure.microservice.cloud;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
